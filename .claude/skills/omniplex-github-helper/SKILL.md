@@ -120,7 +120,44 @@ If you are unsure which file or folder, **ask first**.
 
 ---
 
-## 7. When you are unsure
+## 7. Tamper-protection (SHA-512 fingerprints)
+
+We keep a "fingerprint" of our important documents so we can tell if anyone changed
+them. A *SHA-512 fingerprint* is a long code made from a file's exact contents. Change
+one character and the code changes completely.
+
+**Where they live:** the `Genesis-Core-SHA/` folder, with **one `.sha512` file per
+protected document** (for example `Genesis-Core-SHA/CLAUDE.md.sha512`).
+
+**The rule — every time we add or change a protected document:**
+
+1. Save the document change as usual (the cadence in section 3).
+2. **Re-run SHA-512** on that document to make a fresh fingerprint.
+3. Update its `.sha512` file in `Genesis-Core-SHA/` **in the same commit**, so the
+   fingerprint always matches the saved file.
+
+**To make a fingerprint** (plain command, run from the repo's top folder):
+
+```
+sha512sum CLAUDE.md > Genesis-Core-SHA/CLAUDE.md.sha512
+```
+
+**To check a document was not tampered with** (re-run and compare):
+
+```
+sha512sum -c Genesis-Core-SHA/CLAUDE.md.sha512
+```
+
+- If it prints **`OK`**, the file is unchanged — safe.
+- If it prints **`FAILED`**, the file is different from its fingerprint. **Stop and tell
+  the human** — do not continue until they decide.
+
+Keep the `Genesis-Core-SHA/` fingerprints and the documents in step. If they ever drift
+apart, treat it as a warning and ask.
+
+---
+
+## 8. When you are unsure
 
 **Stop and ask.** Never guess, never assume, never "just proceed." A short pause to confirm
 is always better than an unwanted change.
